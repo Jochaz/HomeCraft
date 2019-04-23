@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello{% endblock %}
+
+{% block body %}
+
+    <article>
+        <div class="jumbotron">
+            <h1 class="display-3">{{article.Titre}}</h1>
+            <p class="lead">Ecrit le {{ article.createdAt | date('d/m/Y')}} à {{article.createdAt | date('H:i')}}</p>
+            <hr class="my-4">
+            <p>{{article.Contenu | raw}}</p>
+            <div class="content">
+                {% if images is not empty %}
+                    <img alt="Embedded Image" src="data:image/jpg;base64,{{ images[0] }}" height="150" width="300" />
+                {% endif %}
+            </div>
+        </div>
+    </article>
+
+{% endblock %}

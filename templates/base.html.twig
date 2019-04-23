@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/fontawesome.css" integrity="sha384-vd1e11sR28tEK9YANUtpIOdjGW14pS87bUBuOIoBILVWLFnS+MCX9T6MMf0VdPGq" crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="/">HomeCraft</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/catalogue">Catalogue</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/compte">Mon compte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Se déconnecter</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/inscription">S'incrire</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="" data-toggle="modal" data-target="#modalLoginForm">Se connecter</a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <a class="nav-link" href="/panier"><i class="fa fa-shopping-basket"></i></a>                
+                    </li> 
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Recherche">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Recherche</button>
+                </form>
+            </div>
+        </nav>
+
+        {% block body %}{% endblock %}
+
+        {% block javascripts %}{% endblock %}
+        
+        <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form action="{{ path('security_login')}}" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <h4 class="modal-title w-100 font-weight-bold">Se connecter</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body mx-3">
+                            <div class="md-form mb-5">         
+                                <label data-error="wrong" data-success="right" for="defaultForm-email"><i class="fas fa-envelope prefix grey-text"></i> Adresse email</label>
+                                <input type="email" id="defaultForm-email" class="form-control validate" required name="_username">
+                                <label data-error="wrong" data-success="right" for="defaultForm-pass"><i class="fas fa-lock prefix grey-text"></i> Mot de passe</label>
+                                <input type="password" id="defaultForm-pass" class="form-control validate" required name="_password">
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                            <button type="button" class="btn btn-secondary">Mot de passe oublié ?</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    <!-- Footer -->
+    <footer class="page-footer font-small blue">
+        <!-- Footer Links -->
+        <div class="container-fluid text-center text-md-left">
+            <!-- Grid row -->
+            <div class="row">
+                <!-- Grid column -->
+                <div class="col-md-6 mt-md-0 mt-3">
+
+                    <!-- Content -->
+                    <h5 class="text-uppercase">Site web d'HomeCraft</h5>
+                    <p align="justify" margin="1px">Vous trouverez sur ce site internet, plein d'objets en plastique imprimés grâce à des imprimantes. Notre mode de fonctionnement n'est pas 
+                    du "DropShipping", nous concevons et fabriquons les pièces artisanalement et nous les décorons à la main avec amour <i class="far fa-heart"></i>. Nous essayons 
+                    de vous garantir votre satisfaction au maximum. Bonne commande ! <br> <br>
+                    Signé l'équipe d'HomeCraft
+                    </p>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none pb-3">
+
+                <!-- Grid column -->
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <!-- Links -->
+                    <h5 class="text-uppercase">Qui sommes nous ?</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="#!">Notre équipe</a>
+                        </li>
+                        <li>
+                            <a href="#!">Mentions légales</a>
+                        </li>
+                        <li>
+                            <a href="#!">CGV</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Grid column -->
+                <!-- Grid column -->
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <!-- Links -->
+                    <h5 class="text-uppercase">BESOIN D'AIDE ?</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="#!">Mode de livraison disponible</a>
+                        </li>
+                        <li>
+                            <a href="#!">Mode de paiement acceptés</a>
+                        </li>
+                        <li>
+                            <a href="#!">Un problème ?</a>
+                        </li>
+                        <li>
+                            <a href="#!">Les questions les plus souvent posées</a>
+                        </li>
+                    </ul>
+                </div>
+            <!-- Grid column -->
+        </div>
+      <!-- Grid row -->
+    </div>
+    <!-- Footer Links -->
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2018 Copyright:
+            <a href="/">Homecraft.com</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</html>
