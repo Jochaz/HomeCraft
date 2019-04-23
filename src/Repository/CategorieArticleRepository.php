@@ -35,6 +35,17 @@ class CategorieArticleRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findAllMainCategories() {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT ca 
+                                              FROM App\Entity\CategorieArticle ca 
+                                              WHERE ca.CategorieArticle is not null
+                                              AND ca.Utilisable = 1
+                                              ORDER BY ca.Nom DESC')
+                                ->setMaxResults(1);
+                        
+        return $query->execute();
+    }
 
     /*
     public function findOneBySomeField($value): ?CategorieArticle

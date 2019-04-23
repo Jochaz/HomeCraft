@@ -24,7 +24,7 @@ class ArticleController extends AbstractController
      */
     public function catalogue(CategorieArticleRepository $repo)
     {
-        $categories = $repo->findAll(); 
+        $categories = $repo->findAllMainCategories(); 
         return $this->render('article/catalogue.html.twig', [
             'categories' => $categories,
         ]);

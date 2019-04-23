@@ -15,10 +15,10 @@
                         </div>
                         <div class="entry-body">
                             <span class="cat"></span>
-                            <h3><a href="{{ path('article_blog', {'id': article.id}) }}">{{article.Titre}}</a></h3>
+                            <h3><a href="{{ path('article_blog', {'id': categories.id}) }}">{{categories.Nom}}</a></h3>
                             {{article.Contenu | raw}}
                             <div class="read-more-date">
-                                <a href="{{ path('article_blog', {'id': article.id}) }}" class="btn btn-primary">Lire plus...</a>
+                                <a href="{{ path('article_blog', {'id': categories.id}) }}" class="btn btn-primary">Lire plus...</a>
                             </div>
                             <span class="date">Ecrit le {{ article.createdAt | date('d/m/Y')}} à {{article.createdAt | date('H:i')}}</span>
                         </div>

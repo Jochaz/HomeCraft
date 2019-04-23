@@ -38,9 +38,21 @@ class CategorieArticle
      */
     private $Utilisable;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\PhotoCategorie", inversedBy="categorieArticles")
+     */
+    private $PhotoCategorie;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Article", mappedBy="Categorie")
+     */
+    private $articles;
+
     public function __construct()
     {
         $this->categorieArticles = new ArrayCollection();
+        $this->PhotoCategorie = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,6 +123,60 @@ class CategorieArticle
     public function setUtilisable(?bool $Utilisable): self
     {
         $this->Utilisable = $Utilisable;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PhotoCategorie[]
+     */
+    public function getPhotoCategorie(): Collection
+    {
+        return $this->PhotoCategorie;
+    }
+
+    public function addPhotoCategorie(PhotoCategorie $photoCategorie): self
+    {
+        if (!$this->PhotoCategorie->contains($photoCategorie)) {
+            $this->PhotoCategorie[] = $photoCategorie;
+        }
+
+        return $this;
+    }
+
+    public function removePhotoCategorie(PhotoCategorie $photoCategorie): self
+    {
+        if ($this->PhotoCategorie->contains($photoCategorie)) {
+            $this->PhotoCategorie->removeElement($photoCategorie);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->addCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->contains($article)) {
+            $this->articles->removeElement($article);
+            $article->removeCategorie($this);
+        }
 
         return $this;
     }
