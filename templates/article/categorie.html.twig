@@ -1,20 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArticleController!{% endblock %}
-
+{% block title %}Notre catalogue{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/styleListe.css">{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'F:/SiteVente3D/www/SiteVente/src/Controller/ArticleController.php'|file_link(0) }}">src/Controller/ArticleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'F:/SiteVente3D/www/SiteVente/templates/article/index.html.twig'|file_link(0) }}">templates/article/index.html.twig</a></code></li>
-    </ul>
-</div>
+<section>
+    {% if categories|length != 0 %}
+    <div class="container" style="height:750px">
+        <div class="row">
+            <div class="col col-xs-12">
+                <div class="blog-grids"> 
+                    {% for categorie in categories %}
+                    <div class="grid" style="height:317px">
+                        <div class="entry-body">
+                            <span class="cat"></span>
+                            <h3><a href="{{ path('categorie_article_listing', {'id': categorie.id}) }}">{{categorie.Nom}}</a></h3>
+                            <div class="entry-media">  
+                                <a href="{{ path('categorie_article_listing', {'id': categorie.id}) }}">    
+                                    {% if categorie.PhotoCategorie|length != 0 %} 
+                                        <img src="data:image/jpg;base64,{{categorie.PhotoCategorie|first.PhotoCategorie}}" alt="{{categorie.PhotoCategorie|first.DescriptionPhotoCategorie}}" width="400px" height="250px">
+                                    {% else %}
+                                        <img src="http://placehold.it/400x250" alt="">
+                                    {% endif %}     
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>  
+    </div>
+    {% else %}
+    <div class="jumbotron">
+    <h1 class="display-3">OUPS CATEGORIES ARE COMING !</h1>
+    <p class="lead">Cette sous-catégorie n'est pas encore disponible !</p>
+    <hr class="my-4">
+    <p class="lead">
+        <img align="center" width="175" height="175" style="border:1px solid grey" src="https://tse4.mm.bing.net/th?id=OIP.y3GSZ4bWG3kgqM85k_VWNwAAAA&pid=15.1&P=0&w=300&h=300">
+    </p>
+    <p>Nous t'invitons à visiter les autres catégories pour voir tous les autres articles disponible. Pendant ce temps, nous travaillons sur l'enrichissement de notre catalogue. Merci de ta compréhension.</p>
+    </div>
+    {% endif %}
+</section>
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
+use App\Entity\CategorieArticle;
 use App\Entity\PhotoCategorie;
 use App\Repository\CategorieArticleRepository;
 
@@ -35,32 +36,21 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    ///**
-    // * @Route("/categorie/{id}", name="categorie_article")
-    // */
-  /*  public function categorie(CategorieArticle $categorie, CategorieArticleRepository $repo){
+    /**
+     * @Route("/categorie/{id}", name="categorie_article")
+    */
+    public function categorie(CategorieArticleRepository $repo, CategorieArticle $categorie){
         
         //Si c'est une categorie et pas une sous-catégorie
-        if (!isNull($categorie.getCategorieArticle())){
+        $categories = $repo->findBy([
+                    'Utilisable' => '1',
+                    "CategorieArticle" => $categorie->getId()
+                ]); 
 
-        }
-        else {
-            $categories = $repo->findBy([
-                        'Utilisable' => '1',
-            //            "CategorieArticle" => NULL
-                    ]); 
-        }
-       // /*$repoPhoto = $this->getDoctrine()->getRepository(PhotoArticleBlog::class);
-        $images = array();
-        $photoArticle = $repoPhoto->findByIdArticle($article->getId());
-        foreach ($photoArticle as $key => $entity) {
-            $images[$key] = base64_encode(stream_get_contents($entity->getPhoto()));
-      //  }*/
-
-    /*    return $this->render('article/categorie.html.twig', [
-            'article' => $article,
-            'images' => $images,
+        return $this->render('article/categorie.html.twig', [
+            'categories' => $categories,
+            'parentCategorieNom' => $categorie->getNom()
         ]);
-    }*/
+    }
     
 }
