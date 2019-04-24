@@ -57,7 +57,7 @@ class PhotoCategorie
 
     public function getPhotoCategorie()
     {
-        return $this->PhotoCategorie;
+        return  base64_encode(stream_get_contents($this->PhotoCategorie));
     }
 
     public function setPhotoCategorie($PhotoCategorie): self
