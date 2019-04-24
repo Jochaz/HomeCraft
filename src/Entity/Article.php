@@ -51,12 +51,13 @@ class Article
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\CategorieArticle", inversedBy="articles")
      */
-    private $Categorie;
+    private $CategorieArticle;
 
     public function __construct()
     {
-        $this->Categorie = new ArrayCollection();
+        $this->CategorieArticle = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -138,26 +139,27 @@ class Article
     /**
      * @return Collection|CategorieArticle[]
      */
-    public function getCategorie(): Collection
+    public function getCategorieArticle(): Collection
     {
-        return $this->Categorie;
+        return $this->CategorieArticle;
     }
 
-    public function addCategorie(CategorieArticle $categorie): self
+    public function addCategorieArticle(CategorieArticle $categorieArticle): self
     {
-        if (!$this->Categorie->contains($categorie)) {
-            $this->Categorie[] = $categorie;
+        if (!$this->CategorieArticle->contains($categorieArticle)) {
+            $this->CategorieArticle[] = $categorieArticle;
         }
 
         return $this;
     }
 
-    public function removeCategorie(CategorieArticle $categorie): self
+    public function removeCategorieArticle(CategorieArticle $categorieArticle): self
     {
-        if ($this->Categorie->contains($categorie)) {
-            $this->Categorie->removeElement($categorie);
+        if ($this->CategorieArticle->contains($categorieArticle)) {
+            $this->CategorieArticle->removeElement($categorieArticle);
         }
 
         return $this;
     }
+
 }

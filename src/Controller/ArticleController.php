@@ -8,6 +8,8 @@ use App\Entity\Article;
 use App\Entity\CategorieArticle;
 use App\Entity\PhotoCategorie;
 use App\Repository\CategorieArticleRepository;
+use App\Repository\ArticleRepository;
+
 
 class ArticleController extends AbstractController
 {
@@ -50,6 +52,22 @@ class ArticleController extends AbstractController
         return $this->render('article/categorie.html.twig', [
             'categories' => $categories,
             'parentCategorieNom' => $categorie->getNom()
+        ]);
+    }
+
+    /**
+     * @Route("/categorie/{id}/article", name="categorie_article_listing")
+    */
+    public function listingArticle(ArticleRepository $repo, CategorieArticle $categorie){
+        
+        //Si c'est une categorie et pas une sous-catégorie
+        $articles = $repo->findBy([
+            'EnVente' => 1
+        ]); 
+
+        return $this->render('article/listearticle.html.twig', [
+            'articles' => $articles,
+            'idCategorie' => $categorie->getId()
         ]);
     }
     

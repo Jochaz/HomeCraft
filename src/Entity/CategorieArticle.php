@@ -44,9 +44,10 @@ class CategorieArticle
     private $PhotoCategorie;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Article", mappedBy="Categorie")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Article", mappedBy="CategorieArticle")
      */
     private $articles;
+
 
     public function __construct()
     {
@@ -165,7 +166,7 @@ class CategorieArticle
     {
         if (!$this->articles->contains($article)) {
             $this->articles[] = $article;
-            $article->addCategorie($this);
+            $article->addCategorieArticle($this);
         }
 
         return $this;
@@ -175,7 +176,7 @@ class CategorieArticle
     {
         if ($this->articles->contains($article)) {
             $this->articles->removeElement($article);
-            $article->removeCategorie($this);
+            $article->removeCategorieArticle($this);
         }
 
         return $this;
