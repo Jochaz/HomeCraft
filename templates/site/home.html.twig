@@ -25,24 +25,51 @@
             </a>
         </div>
     </section>  
-    {% if article is defined %}
+    
     <article>
         <div class="jumbotron">
-            <h2 class="display-5">Les dernières nouvelles</h2>
-            <h3 class="display-6">{{article.Titre}}</h3>
-            <p class="lead">Ecrit le {{ article.createdAt | date('d/m/Y')}} à {{article.createdAt | date('H:i')}}</p>
+        {% if article is defined %}
+            <h2 class="display-5">Dernier ajout dans notre catalogue</h2>
+            <h3 class="display-6">{{article.NomArticle}}</h3>
+            <p class="lead">Ajouté le {{ article.createdAt | date('d/m/Y')}} à {{article.createdAt | date('H:i')}} dans notre catalogue</p>
             <hr class="my-4">
-            <p>{{article.Contenu | raw}}</p>
+            <p>{{article.DescriptionArticle | raw}}</p>
             <div class="content">
-                {% if images is not empty %}
-                    <img alt="Embedded Image" src="data:image/jpg;base64,{{ images[0] }}" height="150" width="300" />
+                {% if article.Photo is not empty %}
+                    <img alt="Embedded Image" src="data:image/jpg;base64,{{ article.Photo[0].PhotoArticle }}" height="400" width="600" />
+                {% else %}
+                    <img src="http://placehold.it/650x400" alt="">
                 {% endif %}
                 <hr>
             </div>
             <div class="read-more-date">
-                <a href="{{ path('article_blog', {'id': article.id}) }}" class="btn btn-primary">Lire plus...</a>
+                <a href="{{ path('article_blog', {'id': articleBlog.id}) }}" class="btn btn-primary">Aller sur sa page</a>
             </div>
+        {% endif %}
+        {% if articleBlog is defined %}
+            <br/>
+            <hr class="my-6">
+            <br/>
+
+            <h2 class="display-5">Les dernières nouvelles</h2>
+            <h3 class="display-6">{{articleBlog.Titre}}</h3>
+            <p class="lead">Ecrit le {{ articleBlog.createdAt | date('d/m/Y')}} à {{articleBlog.createdAt | date('H:i')}}</p>
+            <hr class="my-4">
+            <p>{{articleBlog.Contenu | raw}}</p>
+            <div class="content">
+                 {% if articleBlog.PhotoArticleBlog is not empty %}
+                    <img alt="Embedded Image" src="data:image/jpg;base64,{{ articleBlog.PhotoArticleBlog[0].Photo }}" height="400" width="600" />
+                {% else %}
+                    <img src="http://placehold.it/650x400" alt="">
+                {% endif %}
+               
+            </div>
+             <br/>
+            <div class="read-more-date">
+                <a href="{{ path('article_blog', {'id': articleBlog.id}) }}" class="btn btn-primary">Lire plus...</a>
+            </div>
+           {% endif %}
         </div>
     </article> 
-    {% endif %}
+ 
 {% endblock %}

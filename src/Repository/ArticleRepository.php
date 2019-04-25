@@ -42,7 +42,7 @@ class ArticleRepository extends ServiceEntityRepository
                                               FROM App\Entity\Article ab 
                                               WHERE ab.createdAt=(SELECT MAX(abb.createdAt) 
                                                                   FROM App\Entity\Article abb
-                                                                  WHERE abb.FlgSup <> 1)
+                                                                  WHERE abb.EnVente = 1)
                                               ORDER BY ab.id DESC')
                                 ->setMaxResults(1);
                         

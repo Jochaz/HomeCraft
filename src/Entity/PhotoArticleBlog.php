@@ -27,15 +27,14 @@ class PhotoArticleBlog
     private $Photo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ArticleBlog", inversedBy="IdPhotoArticleBlog")
-     */
-    private $ArticleBlog;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $FlgSup;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ArticleBlog", inversedBy="PhotoArticleBlog")
+     */
+    private $articleBlog;
 
     public function getId(): ?int
     {
@@ -56,24 +55,12 @@ class PhotoArticleBlog
 
     public function getPhoto()
     {
-        return $this->Photo;
+        return base64_encode(stream_get_contents($this->Photo));
     }
 
     public function setPhoto($Photo): self
     {
         $this->Photo = $Photo;
-
-        return $this;
-    }
-
-    public function getArticleBlog(): ?ArticleBlog
-    {
-        return $this->ArticleBlog;
-    }
-
-    public function setArticleBlog(?ArticleBlog $ArticleBlog): self
-    {
-        $this->ArticleBlog = $ArticleBlog;
 
         return $this;
     }
@@ -86,6 +73,18 @@ class PhotoArticleBlog
     public function setFlgSup(bool $FlgSup): self
     {
         $this->FlgSup = $FlgSup;
+
+        return $this;
+    }
+
+    public function getArticleBlog(): ?ArticleBlog
+    {
+        return $this->articleBlog;
+    }
+
+    public function setArticleBlog(?ArticleBlog $articleBlog): self
+    {
+        $this->articleBlog = $articleBlog;
 
         return $this;
     }

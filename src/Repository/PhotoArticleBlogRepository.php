@@ -30,7 +30,7 @@ class PhotoArticleBlogRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             'SELECT p
             FROM App\Entity\PhotoArticleBlog p
-            WHERE p.ArticleBlog = :value
+            WHERE p.id = :value
             ORDER BY p.id ASC'
         )->setParameter('value', $value);
     

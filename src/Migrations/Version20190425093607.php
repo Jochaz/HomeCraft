@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190424134819 extends AbstractMigration
+final class Version20190425093607 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,9 @@ final class Version20190424134819 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE article_categorie_article (article_id INT NOT NULL, categorie_article_id INT NOT NULL, INDEX IDX_94A2D4397294869C (article_id), INDEX IDX_94A2D439EC5D4C30 (categorie_article_id), PRIMARY KEY(article_id, categorie_article_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE article_categorie_article ADD CONSTRAINT FK_94A2D4397294869C FOREIGN KEY (article_id) REFERENCES article (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE article_categorie_article ADD CONSTRAINT FK_94A2D439EC5D4C30 FOREIGN KEY (categorie_article_id) REFERENCES categorie_article (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE photo_article_blog ADD article_blog_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE photo_article_blog ADD CONSTRAINT FK_FF3CDF5137323A20 FOREIGN KEY (article_blog_id) REFERENCES article_blog (id)');
+        $this->addSql('CREATE INDEX IDX_FF3CDF5137323A20 ON photo_article_blog (article_blog_id)');
     }
 
     public function down(Schema $schema) : void
@@ -32,6 +32,8 @@ final class Version20190424134819 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE article_categorie_article');
+        $this->addSql('ALTER TABLE photo_article_blog DROP FOREIGN KEY FK_FF3CDF5137323A20');
+        $this->addSql('DROP INDEX IDX_FF3CDF5137323A20 ON photo_article_blog');
+        $this->addSql('ALTER TABLE photo_article_blog DROP article_blog_id');
     }
 }

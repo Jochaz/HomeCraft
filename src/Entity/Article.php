@@ -34,11 +34,6 @@ class Article
     private $DescriptionArticle;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $DateAjoutArticle;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $EnVente;
@@ -53,9 +48,20 @@ class Article
      */
     private $CategorieArticle;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PhotoArticle", mappedBy="article")
+     */
+    private $Photo;
+
     public function __construct()
     {
         $this->CategorieArticle = new ArrayCollection();
+        $this->Photo = new ArrayCollection();
     }
 
 
@@ -96,18 +102,6 @@ class Article
     public function setDescriptionArticle(string $DescriptionArticle): self
     {
         $this->DescriptionArticle = $DescriptionArticle;
-
-        return $this;
-    }
-
-    public function getDateAjoutArticle(): ?\DateTimeInterface
-    {
-        return $this->DateAjoutArticle;
-    }
-
-    public function setDateAjoutArticle(\DateTimeInterface $DateAjoutArticle): self
-    {
-        $this->DateAjoutArticle = $DateAjoutArticle;
 
         return $this;
     }
@@ -157,6 +151,49 @@ class Article
     {
         if ($this->CategorieArticle->contains($categorieArticle)) {
             $this->CategorieArticle->removeElement($categorieArticle);
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PhotoArticle[]
+     */
+    public function getPhoto(): Collection
+    {
+        return $this->Photo;
+    }
+
+    public function addPhoto(PhotoArticle $photo): self
+    {
+        if (!$this->Photo->contains($photo)) {
+            $this->Photo[] = $photo;
+            $photo->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(PhotoArticle $photo): self
+    {
+        if ($this->Photo->contains($photo)) {
+            $this->Photo->removeElement($photo);
+            // set the owning side to null (unless already changed)
+            if ($photo->getArticle() === $this) {
+                $photo->setArticle(null);
+            }
         }
 
         return $this;

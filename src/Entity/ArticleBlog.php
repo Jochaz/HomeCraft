@@ -39,19 +39,20 @@ class ArticleBlog
      */
     private $idUtilisateur;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PhotoArticleBlog", mappedBy="ArticleBlog")
-     */
-    private $IdPhotoArticleBlog;
 
     /**
      * @ORM\Column(type="boolean")
      */
     private $FlgSup;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PhotoArticleBlog", mappedBy="articleBlog")
+     */
+    private $PhotoArticleBlog;
+
     public function __construct()
     {
-        $this->IdPhotoArticleBlog = new ArrayCollection();
+        $this->PhotoArticleBlog = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,37 +108,6 @@ class ArticleBlog
         return $this;
     }
 
-    /**
-     * @return Collection|PhotoArticleBlog[]
-     */
-    public function getIdPhotoArticleBlog(): Collection
-    {
-        return $this->IdPhotoArticleBlog;
-    }
-
-    public function addIdPhotoArticleBlog(PhotoArticleBlog $idPhotoArticleBlog): self
-    {
-        if (!$this->IdPhotoArticleBlog->contains($idPhotoArticleBlog)) {
-            $this->IdPhotoArticleBlog[] = $idPhotoArticleBlog;
-            $idPhotoArticleBlog->setArticleBlog($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdPhotoArticleBlog(PhotoArticleBlog $idPhotoArticleBlog): self
-    {
-        if ($this->IdPhotoArticleBlog->contains($idPhotoArticleBlog)) {
-            $this->IdPhotoArticleBlog->removeElement($idPhotoArticleBlog);
-            // set the owning side to null (unless already changed)
-            if ($idPhotoArticleBlog->getArticleBlog() === $this) {
-                $idPhotoArticleBlog->setArticleBlog(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getFlgSup(): ?bool
     {
         return $this->FlgSup;
@@ -146,6 +116,37 @@ class ArticleBlog
     public function setFlgSup(bool $FlgSup): self
     {
         $this->FlgSup = $FlgSup;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PhotoArticleBlog[]
+     */
+    public function getPhotoArticleBlog(): Collection
+    {
+        return $this->PhotoArticleBlog;
+    }
+
+    public function addPhotoArticleBlog(PhotoArticleBlog $photoArticleBlog): self
+    {
+        if (!$this->PhotoArticleBlog->contains($photoArticleBlog)) {
+            $this->PhotoArticleBlog[] = $photoArticleBlog;
+            $photoArticleBlog->setArticleBlog($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhotoArticleBlog(PhotoArticleBlog $photoArticleBlog): self
+    {
+        if ($this->PhotoArticleBlog->contains($photoArticleBlog)) {
+            $this->PhotoArticleBlog->removeElement($photoArticleBlog);
+            // set the owning side to null (unless already changed)
+            if ($photoArticleBlog->getArticleBlog() === $this) {
+                $photoArticleBlog->setArticleBlog(null);
+            }
+        }
 
         return $this;
     }

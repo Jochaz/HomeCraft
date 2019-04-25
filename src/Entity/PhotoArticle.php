@@ -26,6 +26,11 @@ class PhotoArticle
      */
     private $PhotoArticle;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Article", inversedBy="Photo")
+     */
+    private $article;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,12 +50,24 @@ class PhotoArticle
 
     public function getPhotoArticle()
     {
-        return $this->PhotoArticle;
+        return base64_encode(stream_get_contents($this->PhotoArticle));
     }
 
     public function setPhotoArticle($PhotoArticle): self
     {
         $this->PhotoArticle = $PhotoArticle;
+
+        return $this;
+    }
+
+    public function getArticle(): ?Article
+    {
+        return $this->article;
+    }
+
+    public function setArticle(?Article $article): self
+    {
+        $this->article = $article;
 
         return $this;
     }

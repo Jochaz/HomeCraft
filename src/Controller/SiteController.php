@@ -2,33 +2,32 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\ArticleBlog;
-use App\Repository\ArticleBlogRepository;
+use App\Entity\PhotoArticle;
 use App\Entity\PhotoArticleBlog;
+use App\Repository\ArticleRepository;
 use Symfony\Component\HttpKernel\Client;
+use App\Repository\ArticleBlogRepository;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SiteController extends AbstractController
 {
     /**
      * @Route("/", name="home")
      */
-    public function home(ArticleBlogRepository $repo)
+    public function home(ArticleBlogRepository $repoBlog, ArticleRepository $repoArticle)
     {
         
-        $articles = $repo->findLastCreatedArticle();
+        $articlesBlog = $repoBlog->findLastCreatedArticle();
+        $articleBlog = $articlesBlog[0];
+
+        $articles = $repoArticle->findLastCreatedArticle();
         $article = $articles[0];
 
-        $repoPhoto = $this->getDoctrine()->getRepository(PhotoArticleBlog::class);
-        $images = array();
-        $photoArticle = $repoPhoto->findByIdArticle($article->getId());
-        foreach ($photoArticle as $key => $entity) {
-            $images[$key] = base64_encode(stream_get_contents($entity->getPhoto()));
-        }
         return $this->render('site/home.html.twig', [
+            "articleBlog" => $articleBlog,
             "article" => $article,
-            "images" => $images
         ]);
     }
     
