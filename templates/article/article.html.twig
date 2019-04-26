@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SiteController!{% endblock %}
+
+{% block body %}
+<div class="container-fluid" id="container-article" style="padding-top:20px; min-height:700px">
+    <div class="jumbotron">
+        <div class="col-lg" id="col-description-article" style="display:inline">
+        One of three columns
+        </div>
+    </div>
+    
+    <div class="card text-white bg-primary" style="max-width:450px">
+        <div class="card-header" style="font-weight:bold">{{article.NomArticle}}</div>
+            <div class="card-body">
+                <button class="btn btn-secondary">Ajouter au panier</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

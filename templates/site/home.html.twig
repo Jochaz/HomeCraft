@@ -40,10 +40,10 @@
                 {% else %}
                     <img src="http://placehold.it/650x400" alt="">
                 {% endif %}
-                <hr>
             </div>
+            <br />
             <div class="read-more-date">
-                <a href="{{ path('article_blog', {'id': articleBlog.id}) }}" class="btn btn-primary">Aller sur sa page</a>
+                <a href="{{ path('article', {'id': article.id}) }}" class="btn btn-primary">Aller sur sa page</a>
             </div>
         {% endif %}
         {% if articleBlog is defined %}
