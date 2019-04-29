@@ -2,20 +2,38 @@
 
 {% block title %}Vos informations : {{client.NomClient}} {{client.PrenomClient}}{% endblock %}
 {% block body %}
-<div class="jumbotron">
-    <ul class="list-group">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Cras justo odio
-        <span class="badge badge-primary badge-pill">14</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Dapibus ac facilisis in
-        <span class="badge badge-primary badge-pill">2</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Morbi leo risus
-        <span class="badge badge-primary badge-pill">1</span>
-    </li>
-    </ul>
+<div class="jumbotron" style="height:650px">
+    <h1 class="display-5">Mon compte</h1>
+    <hr class="my-4">
+    <div id="menu">
+        <ul class="list-group" style="float:left">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                MES INFORMATIONS
+            </li>
+            <a href="/">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Mes informations principales
+                </li>
+            </a>
+            <a href="/">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Mes commandes
+                </li>
+            </a>
+            <a href="/">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Mes adresses
+                </li>
+            </a>
+            <a href="/">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Mes avis
+                </li>
+            </a>
+        </ul>
+    </div>
+    <div id="content" style="width:75%">
+
+    </div>
 </div>
 {% endblock %}

@@ -15,10 +15,14 @@
                             <div class="grid" style="height:317px">
                                 <div class="entry-body">
                                     <span class="cat"></span>
-                                    <h3><a href="">{{article.NomArticle}}</a></h3>
+                                    <h3><a href="{{ path('article', {'id': article.id}) }}">{{article.NomArticle}}</a></h3>
                                     <div class="entry-media">  
-                                        <a href="">    
-                                            
+                                        <a href="{{ path('article', {'id': article.id}) }}">    
+                                            {% if article.Photo|length != 0 %} 
+                                                <img src="data:image/jpg;base64,{{article.Photo|first.PhotoArticle}}" width="400px" height="250px">
+                                            {% else %}
+                                                <img src="http://placehold.it/400x250" alt="">
+                                            {% endif %}     
                                         </a>
                                     </div>
                                 </div>

@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
-use App\Entity\CategorieArticle;
+use Psr\Log\LoggerInterface;
 use App\Entity\PhotoCategorie;
-use App\Repository\CategorieArticleRepository;
+use App\Entity\CategorieArticle;
 use App\Repository\ArticleRepository;
+use App\Repository\CategorieArticleRepository;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class ArticleController extends AbstractController
@@ -63,8 +64,7 @@ class ArticleController extends AbstractController
         //Si c'est une categorie et pas une sous-catégorie
         $articles = $repo->findBy([
             'EnVente' => 1
-        ]); 
-
+        ]);         
         return $this->render('article/listearticle.html.twig', [
             'articles' => $articles,
             'idCategorie' => $categorie->getId()

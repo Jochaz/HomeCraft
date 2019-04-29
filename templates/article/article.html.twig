@@ -1,22 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SiteController!{% endblock %}
+{% block title %}HomeCraft : Article {{article.NomArticle}}{% endblock %}
 
 {% block body %}
-<div class="container-fluid" id="container-article" style="padding-top:20px; min-height:700px">
-    <div class="jumbotron">
-        <div class="col-lg" id="col-description-article" style="display:inline">
-        One of three columns
+<div class="container-fluid" id="container-article" style="padding-top:20px; width:100%; min-height:600px">
+    <div class="jumbotron" style="width:70%; float:left; padding:20px; margin-right: 10px">
+        <h1 class="display-3">{{article.NomArticle}}</h1>
+        <p class="lead">Cette article appartient à la catégorie <a href="{{ path('categorie_article_listing', {'id': article.CategorieArticle|first.id}) }}">{{article.CategorieArticle|first.Nom}}</a>. Nous 
+           avons ajouté cette article le {{ article.createdAt | date('d/m/Y')}}</p>
+        <hr class="my-4">
+        {% if article.Photo|length != 0 %} 
+            <img src="data:image/jpg;base64,{{article.Photo|first.PhotoArticle}}" width="350px" height="350px" style="float:left; padding-right:10px"/>
+        {% else %}
+            <img src="http://placehold.it/350x350" alt="" style="float:left; padding-right:10px">
+        {% endif %}  
+        <div id="description">
+            <p>Description : <br/> {{article.DescriptionArticle}}</p>
         </div>
     </div>
     
     <div class="card text-white bg-primary" style="max-width:450px">
-        <div class="card-header" style="font-weight:bold">{{article.NomArticle}}</div>
-            <div class="card-body">
+        <div class="card-header" style="font-weight:bold;">PANIER</div>
+            <div id="prix" style="margin:auto; padding-top:10px;">
+                <h4>{{article.PrixUnitaireTTC}}€</h4>
+            </div>
+            <div id="quantite"> 
+                <input class="form-control form-control-sm" type="number" placeholder="Quantité" id="inputSmall" min="1" style="margin:auto; width:20%">
+            </div>
+            <div class="card-body" style="margin:auto; padding-top:10px">
                 <button class="btn btn-secondary">Ajouter au panier</button>
             </div>
         </div>
     </div>
-
 </div>
 {% endblock %}
