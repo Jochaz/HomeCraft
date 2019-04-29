@@ -1,39 +1,88 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vos informations : {{client.NomClient}} {{client.PrenomClient}}{% endblock %}
+{% block title %}HomeCraft - Vos informations : {{client.NomClient}} {{client.PrenomClient}}{% endblock %}
 {% block body %}
 <div class="jumbotron" style="height:650px">
     <h1 class="display-5">Mon compte</h1>
     <hr class="my-4">
     <div id="menu">
-        <ul class="list-group" style="float:left">
+        <ul class="list-group" style="float:left; padding-right:15px">
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 MES INFORMATIONS
             </li>
-            <a href="/">
+            <a id="informations_principales_lien" href="#">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Mes informations principales
                 </li>
             </a>
-            <a href="/">
+            <a id="commandes_lien" href="#">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Mes commandes
                 </li>
             </a>
-            <a href="/">
+            <a id="adresses_lien" href="#">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Mes adresses
                 </li>
             </a>
-            <a href="/">
+            <a id="avis_lien" href="#">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Mes avis
                 </li>
             </a>
         </ul>
     </div>
-    <div id="content" style="width:75%">
-
+    <div id="content" style="width:75%;">
+        <div id="informations_principales">
+            <h2>Mes informations principales</h2>
+        </div>
+        <div id="commandes" aria-hidden="true">
+            <h2>Mes commandes</h2>
+        </div>
+        <div id="adresses" aria-hidden="false">
+            <h2>Mes adresses</h2>
+        </div>
+        <div id="avis" aria-hidden="true">
+            <h2>Mes avis que j'ai laissé</h2>
+        </div>
     </div>
 </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+    $(document).ready(function(){
+        $('#informations_principales').show();
+        $('#commandes').hide();
+        $('#adresses').hide();
+        $('#avis').hide();        
+        $('#informations_principales_lien').on('click', function(){
+            $('#informations_principales').show();
+            $('#commandes').hide();
+            $('#adresses').hide();
+            $('#avis').hide();
+        });
+        $('#commandes_lien').on('click', function(){
+            $('#commandes').show();
+            $('#informations_principales').hide();
+            $('#adresses').hide();
+            $('#avis').hide();
+        });
+        $('#adresses_lien').on('click', function(){
+            $('#adresses').show();
+            $('#commandes').hide();
+            $('#informations_principales').hide();
+            $('#avis').hide();
+        });
+        $('#avis_lien').on('click', function(){
+            $('#commandes').hide();
+            $('#informations_principales').hide();
+            $('#adresses').hide();
+            $('#avis').show();
+        });
+    });
+</script>
 {% endblock %}
