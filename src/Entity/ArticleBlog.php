@@ -34,13 +34,6 @@ class ArticleBlog
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="idUtilisateur")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $idUtilisateur;
-
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $FlgSup;
@@ -49,6 +42,11 @@ class ArticleBlog
      * @ORM\OneToMany(targetEntity="App\Entity\PhotoArticleBlog", mappedBy="articleBlog")
      */
     private $PhotoArticleBlog;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="articleBlogs")
+     */
+    private $Client;
 
     public function __construct()
     {
@@ -96,18 +94,6 @@ class ArticleBlog
         return $this;
     }
 
-    public function getIdUtilisateur(): ?Utilisateur
-    {
-        return $this->idUtilisateur;
-    }
-
-    public function setIdUtilisateur(?Utilisateur $idUtilisateur): self
-    {
-        $this->idUtilisateur = $idUtilisateur;
-
-        return $this;
-    }
-
     public function getFlgSup(): ?bool
     {
         return $this->FlgSup;
@@ -147,6 +133,18 @@ class ArticleBlog
                 $photoArticleBlog->setArticleBlog(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->Client;
+    }
+
+    public function setClient(?Client $Client): self
+    {
+        $this->Client = $Client;
 
         return $this;
     }

@@ -64,12 +64,8 @@ class SiteController extends AbstractController
      * @Route("/compte", name="compte")
      */
     public function compte(){
-        if ($this->isUserLogged()){
-            return $this->render('site/compte.html.twig', [
+        return $this->render('site/compte.html.twig', [
                 'client' => $this->getUser()
             ]);
-        } else {
-            return $this->redirectToRoute('home');
-        }
     }
 }

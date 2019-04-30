@@ -33,6 +33,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Se déconnecter</a>
                     </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Administation</a>
+                    </li>
+                    {% endif %}
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="/inscription">S'incrire</a>

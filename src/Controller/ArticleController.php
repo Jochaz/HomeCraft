@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Panier;
 use App\Entity\Article;
 use Psr\Log\LoggerInterface;
 use App\Entity\PhotoCategorie;
@@ -9,6 +10,7 @@ use App\Entity\CategorieArticle;
 use App\Repository\ArticleRepository;
 use App\Repository\CategorieArticleRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -78,5 +80,20 @@ class ArticleController extends AbstractController
         return $this->render('article/article.html.twig', [
             'article' => $article
         ]);
+    }
+
+    /**
+     * @Route("/panier", name="panier")
+    */
+    public function Panier(UserInterface $user){
+
+            $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
+            $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
+
+            return $this->render('article/panier.html.twig', [
+                'panier' => $panier
+            ]);
+        
+        
     }
 }

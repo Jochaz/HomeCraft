@@ -58,10 +58,16 @@ class Article
      */
     private $Photo;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PanierArticle", mappedBy="Article")
+     */
+    private $panierArticles;
+
     public function __construct()
     {
         $this->CategorieArticle = new ArrayCollection();
         $this->Photo = new ArrayCollection();
+        $this->panierArticles = new ArrayCollection();
     }
 
 
@@ -193,6 +199,37 @@ class Article
             // set the owning side to null (unless already changed)
             if ($photo->getArticle() === $this) {
                 $photo->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PanierArticle[]
+     */
+    public function getPanierArticles(): Collection
+    {
+        return $this->panierArticles;
+    }
+
+    public function addPanierArticle(PanierArticle $panierArticle): self
+    {
+        if (!$this->panierArticles->contains($panierArticle)) {
+            $this->panierArticles[] = $panierArticle;
+            $panierArticle->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierArticle(PanierArticle $panierArticle): self
+    {
+        if ($this->panierArticles->contains($panierArticle)) {
+            $this->panierArticles->removeElement($panierArticle);
+            // set the owning side to null (unless already changed)
+            if ($panierArticle->getArticle() === $this) {
+                $panierArticle->setArticle(null);
             }
         }
 

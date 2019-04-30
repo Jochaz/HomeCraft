@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -66,10 +68,22 @@ class Client implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Panier", mappedBy="Client", orphanRemoval=true)
+     */
+    private $paniers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ArticleBlog", mappedBy="Client")
+     */
+    private $articleBlogs;
+
 
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime());
+        $this->paniers = new ArrayCollection();
+        $this->articleBlogs = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -164,7 +178,12 @@ class Client implements UserInterface
     public function getSalt(){}
 
     public function getRoles(){
-        return ['ROLE_USER'];
+        if ($this->EmailClient == 'jordan.chariot@gmail.co') {
+            return ['ROLE_ADMIN'];
+        } else {
+            return ['ROLE_USER'];
+        }
+        
     }
 
     public function getPassword(){
@@ -174,4 +193,67 @@ class Client implements UserInterface
     public function getUserName(){
         return $this->EmailClient;
     }
+
+    /**
+     * @return Collection|Panier[]
+     */
+    public function getPaniers(): Collection
+    {
+        return $this->paniers;
+    }
+
+    public function addPanier(Panier $panier): self
+    {
+        if (!$this->paniers->contains($panier)) {
+            $this->paniers[] = $panier;
+            $panier->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Panier $panier): self
+    {
+        if ($this->paniers->contains($panier)) {
+            $this->paniers->removeElement($panier);
+            // set the owning side to null (unless already changed)
+            if ($panier->getClient() === $this) {
+                $panier->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticleBlog[]
+     */
+    public function getArticleBlogs(): Collection
+    {
+        return $this->articleBlogs;
+    }
+
+    public function addArticleBlog(ArticleBlog $articleBlog): self
+    {
+        if (!$this->articleBlogs->contains($articleBlog)) {
+            $this->articleBlogs[] = $articleBlog;
+            $articleBlog->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleBlog(ArticleBlog $articleBlog): self
+    {
+        if ($this->articleBlogs->contains($articleBlog)) {
+            $this->articleBlogs->removeElement($articleBlog);
+            // set the owning side to null (unless already changed)
+            if ($articleBlog->getClient() === $this) {
+                $articleBlog->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

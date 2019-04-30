@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190425093314 extends AbstractMigration
+final class Version20190430133138 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,9 @@ final class Version20190425093314 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE article_possede_photo (id INT AUTO_INCREMENT NOT NULL, photo_id INT NOT NULL, article_id INT NOT NULL, UNIQUE INDEX UNIQ_A6B5EC7C7E9E4C8C (photo_id), UNIQUE INDEX UNIQ_A6B5EC7C7294869C (article_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE article_possede_photo ADD CONSTRAINT FK_A6B5EC7C7E9E4C8C FOREIGN KEY (photo_id) REFERENCES photo_article (id)');
-        $this->addSql('ALTER TABLE article_possede_photo ADD CONSTRAINT FK_A6B5EC7C7294869C FOREIGN KEY (article_id) REFERENCES article_blog (id)');
+        $this->addSql('ALTER TABLE article_blog ADD CONSTRAINT FK_7057D64219EB6921 FOREIGN KEY (client_id) REFERENCES client (id)');
+        $this->addSql('CREATE INDEX IDX_7057D64219EB6921 ON article_blog (client_id)');
+        $this->addSql('ALTER TABLE panier_article DROP quantite');
     }
 
     public function down(Schema $schema) : void
@@ -32,6 +32,8 @@ final class Version20190425093314 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE article_possede_photo');
+        $this->addSql('ALTER TABLE article_blog DROP FOREIGN KEY FK_7057D64219EB6921');
+        $this->addSql('DROP INDEX IDX_7057D64219EB6921 ON article_blog');
+        $this->addSql('ALTER TABLE panier_article ADD quantite INT DEFAULT NULL');
     }
 }

@@ -39,7 +39,7 @@ class SecuriteController extends AbstractController
 
             return $this->redirectToRoute('home');
         } else{
-            $logger->error('An error occurred');
+                $logger->error('An error occurred');
         }
         
         return $this->render('securite/inscriptionClient.html.twig', [
