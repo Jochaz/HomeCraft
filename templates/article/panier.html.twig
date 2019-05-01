@@ -1,7 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}HomeCraft : Panier{% endblock %}
+{% block title %}HomeCraft : Votre panier{% endblock %}
 
 {% block body %}
-
+    <div id="entete_panier">
+        <h2 class="display-5" style="padding: 30px">Votre panier <i class="fa fa-shopping-basket"></i></div>
+    </div>
+    <section class="jumbotron">
+        <div id="contenu_panier">
+            <div id="tableau_panier" style="display: inline-block; width:70%; padding-right:10px">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Article</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix</th>
+                            <th scope="col">Prix total</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for panierArticle in panier.panierArticles %}
+                            <tr>
+                                <td>{{panierArticle.article.NomArticle | raw}}</td>
+                                <td>{{panierArticle.Quantite | raw}}</td>
+                                <td>{{panierArticle.article.PrixUnitaireTTC}}€</td>
+                                <td>{{panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite}}€</td>
+                                <td><a href=""><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
+            <div class="card text-white bg-primary" style="float:right; width:30%">
+                <div class="card-header" style="font-weight:bold;">PANIER</div>
+                    <div id="recap_panier" style="margin:auto; padding:10px;">
+                        <ul>
+                        {% set prixTotalPanier = 0 %}
+                        {% for panierArticle in panier.panierArticles %}
+                            {% set prixTotalPanier = prixTotalPanier + panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite %} 
+                            <li>
+                                {{panierArticle.article.NomArticle | raw}} en {{panierArticle.Quantite | raw}} exemplaire(s) : {{panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite}}€
+                            </li>
+                        {% endfor %} 
+                        </ul>
+                        
+                    </div>
+                    <div class="card-body" style="margin:auto; padding-top:10px">
+                        <p><strong>Montant total de votre panier : {{prixTotalPanier}}€</strong></p>
+                        <button class="btn btn-success">Passer la commande</button>
+                        <button class="btn btn-secondary">supprimer le panier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

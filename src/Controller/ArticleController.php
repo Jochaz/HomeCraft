@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Panier;
 use App\Entity\Article;
-use Psr\Log\LoggerInterface;
-use App\Entity\PhotoCategorie;
 use App\Entity\CategorieArticle;
 use App\Repository\ArticleRepository;
 use App\Repository\CategorieArticleRepository;
@@ -32,7 +30,7 @@ class ArticleController extends AbstractController
     public function catalogue(CategorieArticleRepository $repo)
     {
         $categories = $repo->findBy([
-            'Utilisable' => '1',
+            'Utilisable' => '0',
             "CategorieArticle" => NULL
         ]); 
 
@@ -51,7 +49,7 @@ class ArticleController extends AbstractController
                     'Utilisable' => '1',
                     "CategorieArticle" => $categorie->getId()
                 ]); 
-
+        dump($categories);
         return $this->render('article/categorie.html.twig', [
             'categories' => $categories,
             'parentCategorieNom' => $categorie->getNom()
@@ -95,5 +93,17 @@ class ArticleController extends AbstractController
             ]);
         
         
+    }
+
+    /**
+     * @Route("/addpanier", name="AjoutPanier")
+     * 
+     * @ParamConverter("")
+    */
+    public function AddPanier(Article $article, UserInterface $user){
+        $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
+        $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
+        dump($panier);
+        return $this->redirectToRoute('home');
     }
 }

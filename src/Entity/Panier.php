@@ -29,6 +29,11 @@ class Panier
      */
     private $panierArticles;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $NomPanier;
+
     public function __construct()
     {
         $this->panierArticles = new ArrayCollection();
@@ -78,6 +83,18 @@ class Panier
                 $panierArticle->setPanier(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNomPanier(): ?string
+    {
+        return $this->NomPanier;
+    }
+
+    public function setNomPanier(?string $NomPanier): self
+    {
+        $this->NomPanier = $NomPanier;
 
         return $this;
     }
