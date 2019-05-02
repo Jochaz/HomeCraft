@@ -6,6 +6,7 @@ use App\Entity\Panier;
 use App\Entity\Article;
 use App\Entity\CategorieArticle;
 use App\Repository\ArticleRepository;
+use Symfony\Component\HttpFoundation\Request;
 use App\Repository\CategorieArticleRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -96,14 +97,13 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/addpanier", name="AjoutPanier")
-     * 
-     * @ParamConverter("")
+     * @Route("/addpanier/{id}", name="AjoutPanier")
     */
-    public function AddPanier(Article $article, UserInterface $user){
+    public function AddPanier(Article $article, UserInterface $user, Request $request){
+        $qteArticle = $request->request->get('_qte'); 
         $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
         $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
-        dump($panier);
+        var_dump($panier);
         return $this->redirectToRoute('home');
     }
 }
