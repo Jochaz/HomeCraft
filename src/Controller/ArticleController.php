@@ -97,13 +97,9 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/addpanier/{id}", name="AjoutPanier")
+     * @Route("/addpanier", name="AjoutPanier")
     */
-    public function AddPanier(Article $article, UserInterface $user, Request $request){
-        $qteArticle = $request->request->get('_qte'); 
-        $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
-        $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
-        var_dump($panier);
-        return $this->redirectToRoute('home');
+    public function AddPanier(){
+        return $this->redirectToRoute('site/home.html.twig');
     }
 }
