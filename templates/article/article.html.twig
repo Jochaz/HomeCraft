@@ -3,7 +3,7 @@
 {% block title %}HomeCraft : Article {{article.NomArticle}}{% endblock %}
 
 {% block body %}
-<form method="POST">
+{% set qteArticle = 1 %}
 <div class="container-fluid" id="container-article" style="padding-top:20px; width:100%; min-height:600px">
     <div class="jumbotron" style="width:70%; float:left; padding:20px; margin-right: 10px">
         <h1 class="display-3">{{article.NomArticle}}</h1>
@@ -21,21 +21,29 @@
     </div>
     <div class="card text-white bg-primary" style="max-width:450px">
             <div class="card-header" style="font-weight:bold;">PANIER</div>
-                <div id="prix" style="margin:auto; padding-top:10px;">
-                    <h4 class="display-7">Prix de l'article : {{article.PrixUnitaireTTC}}€</h4>
-                </div>
-                <div id="quantite" style="padding-bottom:10px"> 
-                    <input class="form-control form-control-sm" type="number" placeholder="Quantité" id="qte" name="_qte" min="1" value="1" style="margin:auto; width:20%; text-align:center">
-                </div>
-                <div class="card-body" style="margin:auto; padding-top:10px">
-                    {% if app.user %}
-                    <a href="{{ path('AjoutPanier') }}" style="padding:10px;background-color:#2ecc71; border-radius: 10px"><font color="white"><strong><i class="fa fa-shopping-basket"></i> Ajouter au panier</strong></font></a> 
-                    {% else %}
-                    <p>Veuillez vous connecter pour ajouter cet article dans votre panier</p> 
-                    {% endif %}
-                </div>
+                <form action="{{path('AjoutPanier')}}" method="post">
+                    <div id="prix" style="margin:auto; padding-top:10px;">
+                        <h4 class="display-7">Prix de l'article : {{article.PrixUnitaireTTC}}€</h4>
+                    </div>
+                    <div id="quantite" style="padding-bottom:10px"> 
+                        <input type="hidden" name="idArticle" />
+                        <input class="form-control form-control-sm" type="number" placeholder="Quantité" id="qte" name="qte" min="1" value="1" style="margin:auto; width:20%; text-align:center"> 
+                    </div>
+                    <div class="card-body" style="margin:auto; padding-top:10px">
+                        {% if app.user %}
+                        <button type="submit" class="btn btn-success">Ajouter au panier</button>
+                        {% else %}
+                        <p>Veuillez vous connecter pour ajouter cet article dans votre panier</p> 
+                        {% endif %}
+                    </div>
+                </form>
             </div>
     </div>
 </div>
-</form>
+
+<script>
+    document.querySelector('[name=idArticle]').value = {{article.id}};
+    document.querySelector('[name=qte]').value = document.getElementById("qte").value;
+</script>
+
 {% endblock %}

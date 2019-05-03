@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Entity\Panier;
 use App\Entity\Article;
+use App\Entity\PanierArticle;
 use App\Entity\CategorieArticle;
 use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\CategorieArticleRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -77,7 +82,7 @@ class ArticleController extends AbstractController
     */
     public function Article(Article $article){
         return $this->render('article/article.html.twig', [
-            'article' => $article
+            'article' => $article,
         ]);
     }
 
@@ -88,9 +93,8 @@ class ArticleController extends AbstractController
 
             $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
             $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
-
             return $this->render('article/panier.html.twig', [
-                'panier' => $panier
+                'panier' => $panier,
             ]);
         
         
@@ -99,7 +103,50 @@ class ArticleController extends AbstractController
     /**
      * @Route("/addpanier", name="AjoutPanier")
     */
-    public function AddPanier(){
-        return $this->redirectToRoute('site/home.html.twig');
+    public function AddPanier(Request $request, UserInterface $user, ObjectManager $manager){
+        $qte = $request->get('qte');
+        $idArticle = $request->get('idArticle');
+        
+        $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
+        $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
+
+        $repoClient = $this->getDoctrine()->getRepository(Client::class);
+        $client = $repoClient->find($user->getId());
+
+        $repoArticle = $this->getDoctrine()->getRepository(Article::class);
+        $article = $repoArticle->find($idArticle); 
+
+        dump($article);
+        
+        //On créer le panier avant d'ajouter l'article si il n'existe pas
+        if (is_null($panier)){
+            $panier = new Panier();
+
+            $panier->setClient($client);
+            $panier->setNomPanier('');
+            $panier->setCreatedAt(new \DateTime());
+            $manager->persist($panier);
+            $manager->flush();
+        }
+
+        $repoPanierArticle = $this->getDoctrine()->getRepository(PanierArticle::class);
+        $panierArticle = $repoPanierArticle->findOneBy(["Panier" => $panier, "Article" => $article]);
+
+        //Si l'article n'est pas dans le panier
+        if (is_null($panierArticle)){
+            $panierArticle = new PanierArticle();
+            $panierArticle->setArticle($article);
+            $panierArticle->setPanier($panier);
+            $panierArticle->setQuantite($qte);
+        } else //Sinon on ajoute la quantité à la quantité existante
+        {
+            $panierArticle->setQuantite($panierArticle->getQuantite() + $qte);
+        }
+
+        $manager->persist($panierArticle);
+        $manager->flush();
+        
+        
+        return $this->render('site/home.html.twig');
     }
 }

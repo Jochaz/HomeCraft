@@ -28,6 +28,13 @@ class PanierArticle
      */
     private $Panier;
 
+    public function __construct()
+    {
+      /*  $this->Article = new $Article;
+        $this->Panier = new $Panier;
+        $this->Quantite = $Qte;*/
+    }
+
     public function getArticle(): ?Article
     {
         return $this->Article;
