@@ -26,7 +26,7 @@
                                 <td>{{panierArticle.Quantite | raw}}</td>
                                 <td>{{panierArticle.article.PrixUnitaireTTC}}€</td>
                                 <td>{{panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite}}€</td>
-                                <td><a href=""><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                <td><a href="{{path('SupprArticlePanier', {"id": panierArticle.article.id})}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -48,8 +48,12 @@
                     </div>
                     <div class="card-body" style="margin:auto; padding-top:10px">
                         <p><strong>Montant total de votre panier : {{prixTotalPanier}}€</strong></p>
+                        {% if panier.panierArticles|length != 0 %}
                         <button class="btn btn-success">Passer la commande</button>
-                        <button class="btn btn-secondary">supprimer le panier</button>
+                        <button class="btn btn-secondary">supprimer la totalité du panier</button>
+                        {% else %}
+                        <p><font color="black"><strong>Votre panier est vide, il faut au moins 1 article</strong></font></p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

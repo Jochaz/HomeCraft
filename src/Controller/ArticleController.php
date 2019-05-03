@@ -149,4 +149,22 @@ class ArticleController extends AbstractController
         
         return $this->redirectToRoute('panier');
     }
+
+    /**
+     * @Route("/SupprArticlePanier/{id}", name="SupprArticlePanier")
+     */
+    public function SupprArticlePanier(Article $article, UserInterface $user, ObjectManager $manager){
+        $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
+        $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
+
+        $repoPanierArticle = $this->getDoctrine()->getRepository(PanierArticle::class);
+        $panierArticle = $repoPanierArticle->findOneBy(["Panier" => $panier, "Article" => $article]);
+
+        $manager->remove($panierArticle);
+        $manager->flush();
+
+        return $this->redirectToRoute('panier', [
+            'panier' => $panier,
+        ]);
+    }
 }
