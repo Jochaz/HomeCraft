@@ -147,6 +147,6 @@ class ArticleController extends AbstractController
         $manager->flush();
         
         
-        return $this->render('site/home.html.twig');
+        return $this->redirectToRoute('panier');
     }
 }

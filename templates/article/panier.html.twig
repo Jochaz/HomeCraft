@@ -22,7 +22,7 @@
                     <tbody>
                         {% for panierArticle in panier.panierArticles %}
                             <tr>
-                                <td>{{panierArticle.article.NomArticle | raw}}</td>
+                                <td><a href="/article/{{panierArticle.article.id}}">{{panierArticle.article.NomArticle | raw}}</a></td>
                                 <td>{{panierArticle.Quantite | raw}}</td>
                                 <td>{{panierArticle.article.PrixUnitaireTTC}}€</td>
                                 <td>{{panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite}}€</td>

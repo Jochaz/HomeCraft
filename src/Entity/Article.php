@@ -63,6 +63,11 @@ class Article
      */
     private $panierArticles;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $PrixProduction;
+
     public function __construct()
     {
         $this->CategorieArticle = new ArrayCollection();
@@ -232,6 +237,18 @@ class Article
                 $panierArticle->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrixProduction(): ?float
+    {
+        return $this->PrixProduction;
+    }
+
+    public function setPrixProduction(?float $PrixProduction): self
+    {
+        $this->PrixProduction = $PrixProduction;
 
         return $this;
     }
