@@ -68,11 +68,17 @@ class Article
      */
     private $PrixProduction;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Commande", mappedBy="Article")
+     */
+    private $commandes;
+
     public function __construct()
     {
         $this->CategorieArticle = new ArrayCollection();
         $this->Photo = new ArrayCollection();
         $this->panierArticles = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
 
@@ -249,6 +255,34 @@ class Article
     public function setPrixProduction(?float $PrixProduction): self
     {
         $this->PrixProduction = $PrixProduction;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commande[]
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes[] = $commande;
+            $commande->addArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): self
+    {
+        if ($this->commandes->contains($commande)) {
+            $this->commandes->removeElement($commande);
+            $commande->removeArticle($this);
+        }
 
         return $this;
     }
