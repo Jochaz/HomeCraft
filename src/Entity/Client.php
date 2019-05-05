@@ -83,6 +83,11 @@ class Client implements UserInterface
      */
     private $commandes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Adresse", mappedBy="Client")
+     */
+    private $adresses;
+
 
     public function __construct()
     {
@@ -90,6 +95,7 @@ class Client implements UserInterface
         $this->paniers = new ArrayCollection();
         $this->articleBlogs = new ArrayCollection();
         $this->commandes = new ArrayCollection();
+        $this->adresses = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -287,6 +293,37 @@ class Client implements UserInterface
             // set the owning side to null (unless already changed)
             if ($commande->getClient() === $this) {
                 $commande->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Adresse[]
+     */
+    public function getAdresses(): Collection
+    {
+        return $this->adresses;
+    }
+
+    public function addAdress(Adresse $adress): self
+    {
+        if (!$this->adresses->contains($adress)) {
+            $this->adresses[] = $adress;
+            $adress->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdress(Adresse $adress): self
+    {
+        if ($this->adresses->contains($adress)) {
+            $this->adresses->removeElement($adress);
+            // set the owning side to null (unless already changed)
+            if ($adress->getClient() === $this) {
+                $adress->setClient(null);
             }
         }
 

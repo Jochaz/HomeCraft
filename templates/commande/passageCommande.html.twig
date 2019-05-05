@@ -14,28 +14,27 @@
             </div>
             {% else %}
             <div id="tableau_panier" style="display: inline-block; width:70%; padding-right:10px">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Article</th>
-                            <th scope="col">Quantité</th>
-                            <th scope="col">Prix</th>
-                            <th scope="col">Prix total</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for panierArticle in panier.panierArticles %}
-                            <tr>
-                                <td><a href="/article/{{panierArticle.article.id}}">{{panierArticle.article.NomArticle | raw}}</a></td>
-                                <td>{{panierArticle.Quantite | raw}}</td>
-                                <td>{{panierArticle.article.PrixUnitaireTTC}}€</td>
-                                <td>{{panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite}}€</td>
-                                <td><a href="{{path('SupprArticlePanier', {"id": panierArticle.article.id})}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                            </tr>
+                <div id="adresse">
+                    <p>
+
+                    </p>
+                </div>
+                <div id="modePaiement">
+                    <select class="custom-select">
+                        <!--<option selected="">Open this select menu</option>-->
+                        {% for modePaiement in modesPaiement %}
+                            <option value="{{modePaiement.id}}">{{modePaiement.Libelle}}</option>
                         {% endfor %}
-                    </tbody>
-                </table> 
+                    </select>
+                </div>
+                <div id="modeExpedition">
+                    <select class="custom-select">
+                        <!--<option selected="">Open this select menu</option>-->
+                        {% for modeExpedition in modesExpedition %}
+                            <option value="{{modeExpedition.id}}">{{modeExpedition.Libelle}}</option>
+                        {% endfor %}
+                    </select>
+                </div>       
             </div>
             <div class="card text-white bg-primary" style="float:right; width:30%">
                 <div class="card-header" style="font-weight:bold;">PANIER</div>

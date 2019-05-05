@@ -13,8 +13,6 @@ use App\Repository\CategorieArticleRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -161,6 +159,21 @@ class ArticleController extends AbstractController
         $panierArticle = $repoPanierArticle->findOneBy(["Panier" => $panier, "Article" => $article]);
 
         $manager->remove($panierArticle);
+        $manager->flush();
+
+        return $this->redirectToRoute('panier', [
+            'panier' => $panier,
+        ]);
+    }
+
+    /**
+     * @Route("/DeletePanier", name="DeletePanier")
+     */
+    public function DeletePanier(UserInterface $user, ObjectManager $manager){
+        $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
+        $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
+
+        $manager->remove($panier);
         $manager->flush();
 
         return $this->redirectToRoute('panier', [

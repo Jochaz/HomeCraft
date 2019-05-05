@@ -65,6 +65,11 @@ class Adresse
      */
     private $commandes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="adresses")
+     */
+    private $Client;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -198,6 +203,18 @@ class Adresse
                 $commande->setAdresseLivraison(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->Client;
+    }
+
+    public function setClient(?Client $Client): self
+    {
+        $this->Client = $Client;
 
         return $this;
     }
