@@ -20,6 +20,7 @@
                     </p>
                 </div>
                 <div id="modePaiement">
+                    <label for="custom-select">Sélectionner le mode de paiement : </label><br />
                     <select class="custom-select">
                         <!--<option selected="">Open this select menu</option>-->
                         {% for modePaiement in modesPaiement %}
@@ -28,6 +29,7 @@
                     </select>
                 </div>
                 <div id="modeExpedition">
+                    <label for="custom-select">Sélectionner le mode d'expédition : </label><br />
                     <select class="custom-select">
                         <!--<option selected="">Open this select menu</option>-->
                         {% for modeExpedition in modesExpedition %}
@@ -35,6 +37,9 @@
                         {% endfor %}
                     </select>
                 </div>       
+                <div id="Adresses">
+                    
+                </div>
             </div>
             <div class="card text-white bg-primary" style="float:right; width:30%">
                 <div class="card-header" style="font-weight:bold;">PANIER</div>
