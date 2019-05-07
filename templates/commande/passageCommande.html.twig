@@ -6,7 +6,7 @@
     <div id="entete_panier">
         <h2 class="display-5" style="padding: 30px">Votre panier <i class="fa fa-shopping-basket"></i></div>
     </div>
-    <section class="jumbotron">
+    <section class="jumbotron" onLoad="affichage()">
         <div id="contenu_panier">
             {% if panier is null %}
             <div id="panier_vide">
@@ -15,13 +15,13 @@
             {% else %}
             <div id="tableau_panier" style="display: inline-block; width:70%; padding-right:10px">
                 <div id="adresse">
-                    <p>
-
-                    </p>
+                    <label for="custom-select">Votre adresse de livraison/facturation : </label><br />
+                    {{form_start(formAdresseLivraison)}}
+                    {{form_end(formAdresseLivraison)}}
                 </div>
                 <div id="modePaiement">
                     <label for="custom-select">Sélectionner le mode de paiement : </label><br />
-                    <select class="custom-select">
+                    <select class="custom-select" id="selectModePaiement"  onChange="affichage()">
                         <!--<option selected="">Open this select menu</option>-->
                         {% for modePaiement in modesPaiement %}
                             <option value="{{modePaiement.id}}">{{modePaiement.Libelle}}</option>
@@ -30,16 +30,13 @@
                 </div>
                 <div id="modeExpedition">
                     <label for="custom-select">Sélectionner le mode d'expédition : </label><br />
-                    <select class="custom-select">
+                    <select class="custom-select" id="selectModeExpedition">
                         <!--<option selected="">Open this select menu</option>-->
                         {% for modeExpedition in modesExpedition %}
                             <option value="{{modeExpedition.id}}">{{modeExpedition.Libelle}}</option>
                         {% endfor %}
                     </select>
                 </div>       
-                <div id="Adresses">
-                    
-                </div>
             </div>
             <div class="card text-white bg-primary" style="float:right; width:30%">
                 <div class="card-header" style="font-weight:bold;">PANIER</div>
@@ -58,11 +55,11 @@
                     <div class="card-body" style="margin:auto; padding-top:10px">
                         <p><strong>Montant total de votre panier : {{prixTotalPanier}}€</strong></p>
                         {% if panier.panierArticles|length != 0 %}
-                        <a href="{{path('PassageCommande')}}">
+                        <a href="{{path('CreationCommande')}}">
                             <button class="btn btn-success">Passer la commande</button>
                         </a>
-                        <a href="{{path('DeletePanier')}}">
-                            <button class="btn btn-secondary">supprimer la totalité du panier</button>
+                        <a href="{{path('panier')}}">
+                            <button class="btn btn-secondary">Retour au panier</button>
                         </a>
                         {% else %}
                         <p><font color="black"><strong>Votre panier est vide, il faut au moins 1 article</strong></font></p>
@@ -73,4 +70,12 @@
             {% endif %}
         </div>
     </section>
+    <script>
+        function affichage(){
+            //Si c'est remise en main propre on affichage du texte au lieu de l'adresse
+            if (document.getElementById("selectModeExpedition").value = 1) {
+
+            }
+        }    
+    </script>
 {% endblock %}

@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\Panier;
 use App\Entity\Adresse;
+use App\Form\AdresseType;
 use App\Entity\ModeExpedition;
 use App\Entity\ModePaiement;
 
@@ -20,6 +21,16 @@ class CommandeController extends AbstractController
         return $this->render('commande/index.html.twig', [
             'commande' => $commande
         ]);
+    }
+
+    /**
+     * @Route("/creationCommande", name="CreationCommande")
+     */
+    public function creationCommande(UserInterface $user){
+        
+        return $this->render('commande/commandeCreee.html.twig', [
+            'commande' => $commande
+        ]); 
     }
 
      /**
@@ -39,11 +50,17 @@ class CommandeController extends AbstractController
         $repoModePaiement = $this->getDoctrine()->getRepository(ModePaiement::class);
         $ModePaiement = $repoModePaiement->findBy(['PlusUtilise' => 0]);
 
+        $repoAdresseLivraison = $this->getDoctrine()->getRepository(Adresse::class);
+        $adresseLivraison = $repoAdresseLivraison->findOneBy(['Client' => $user->getId()]);
+
+        $formAdresseLivraison = $this->createForm(AdresseType::class, $adresseLivraison);
+        dump($user->getId());
         return $this->render('commande/passageCommande.html.twig', [
             "panier" => $panier,
             "adresses" => $adresses,
             "modesExpedition" => $ModeExpedition,
             "modesPaiement" => $ModePaiement,
+            "formAdresseLivraison" => $formAdresseLivraison->createView(),
         ]);
     }
 

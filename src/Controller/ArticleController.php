@@ -173,6 +173,13 @@ class ArticleController extends AbstractController
         $repoPanier = $this->getDoctrine()->getRepository(Panier::class);
         $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
 
+        $repoPanierArticle = $this->getDoctrine()->getRepository(PanierArticle::class);
+        $panierArticle = $repoPanierArticle->findBy(["Panier" => $panier]);
+
+        foreach ($panierArticle as $contenuPanier) {
+            $manager->remove($contenuPanier);
+        }
+       
         $manager->remove($panier);
         $manager->flush();
 
