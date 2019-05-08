@@ -28,6 +28,11 @@ class StatutCommande
      */
     private $commandes;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $CodeStatut;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -77,6 +82,18 @@ class StatutCommande
                 $commande->setStatutCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCodeStatut(): ?string
+    {
+        return $this->CodeStatut;
+    }
+
+    public function setCodeStatut(string $CodeStatut): self
+    {
+        $this->CodeStatut = $CodeStatut;
 
         return $this;
     }

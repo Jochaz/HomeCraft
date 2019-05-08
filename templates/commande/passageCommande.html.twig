@@ -13,69 +13,72 @@
                 <p style="text-align:center">Votre panier est vide !</p>
             </div>
             {% else %}
-            <div id="tableau_panier" style="display: inline-block; width:70%; padding-right:10px">
-                <div id="adresse">
-                    <label for="custom-select">Votre adresse de livraison/facturation : </label><br />
-                    {{form_start(formAdresseLivraison)}}
-                    {{form_end(formAdresseLivraison)}}
-                </div>
-                <div id="modePaiement">
-                    <label for="custom-select">Sélectionner le mode de paiement : </label><br />
-                    <select class="custom-select" id="selectModePaiement"  onChange="affichage()">
-                        <!--<option selected="">Open this select menu</option>-->
-                        {% for modePaiement in modesPaiement %}
-                            <option value="{{modePaiement.id}}">{{modePaiement.Libelle}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div id="modeExpedition">
-                    <label for="custom-select">Sélectionner le mode d'expédition : </label><br />
-                    <select class="custom-select" id="selectModeExpedition">
-                        <!--<option selected="">Open this select menu</option>-->
-                        {% for modeExpedition in modesExpedition %}
-                            <option value="{{modeExpedition.id}}">{{modeExpedition.Libelle}}</option>
-                        {% endfor %}
-                    </select>
-                </div>       
-            </div>
-            <div class="card text-white bg-primary" style="float:right; width:30%">
-                <div class="card-header" style="font-weight:bold;">PANIER</div>
-                    <div id="recap_panier" style="margin:auto; padding:10px;">
-                        <ul>
-                        {% set prixTotalPanier = 0 %}
-                        {% for panierArticle in panier.panierArticles %}
-                            {% set prixTotalPanier = prixTotalPanier + panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite %} 
-                            <li>
-                                {{panierArticle.article.NomArticle | raw}} en {{panierArticle.Quantite | raw}} exemplaire(s) : {{panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite}}€
-                            </li>
-                        {% endfor %} 
-                        </ul>
-                        
+            <form action="{{path('CreationCommande')}}" method="post">
+                <div id="tableau_panier" style="display: inline-block; width:70%; padding-right:10px">
+                    <div id="adresse">
+                        <div class="alert alert-dismissible alert-warning">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <h4 class="alert-heading">Attention !</h4>
+                            <p class="mb-0">L'adresse de livraison et de facturation sont a titre indicatif. Vous pouvez la modifier dans votre espace client.</p>
+                        </div>
+                        <label for="custom-select">Votre adresse de livraison/facturation : </label><br />
+                        <p>
+                            Rue 1 : {{Adresse.Rue1Adresse}}<br/>
+                            Rue 2 : {{Adresse.Rue2Adresse}}<br/>
+                            Rue 3 : {{Adresse.Rue3Adresse}}<br/>
+                            Ville : {{Adresse.VilleAdresse}}<br/>
+                            Code postal : {{Adresse.CodePostalAdresse}}<br/>
+                            Pays : {{Adresse.PaysAdresse.LibellePays}}<br/>
+                        </p>
                     </div>
-                    <div class="card-body" style="margin:auto; padding-top:10px">
-                        <p><strong>Montant total de votre panier : {{prixTotalPanier}}€</strong></p>
-                        {% if panier.panierArticles|length != 0 %}
-                        <a href="{{path('CreationCommande')}}">
-                            <button class="btn btn-success">Passer la commande</button>
-                        </a>
-                        <a href="{{path('panier')}}">
-                            <button class="btn btn-secondary">Retour au panier</button>
-                        </a>
-                        {% else %}
-                        <p><font color="black"><strong>Votre panier est vide, il faut au moins 1 article</strong></font></p>
-                        {% endif %}
+                    <div id="modePaiement">
+                        <label for="custom-select">Sélectionner le mode de paiement : </label><br />
+                        <select class="custom-select" id="selectModePaiement" name="selectModePaiement">
+                            <!--<option selected="">Open this select menu</option>-->
+                            {% for modePaiement in modesPaiement %}
+                                <option value="{{modePaiement.id}}">{{modePaiement.Libelle}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div id="modeExpedition">
+                        <label for="custom-select">Sélectionner le mode d'expédition : </label><br />
+                        <select class="custom-select" id="selectModeExpedition" name="selectModeExpedition">
+                            <!--<option selected="">Open this select menu</option>-->
+                            {% for modeExpedition in modesExpedition %}
+                                <option value="{{modeExpedition.id}}">{{modeExpedition.Libelle}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>       
+                </div>
+                <div class="card text-white bg-primary" style="float:right; width:30%">
+                    <div class="card-header" style="font-weight:bold;">PANIER</div>
+                        <div id="recap_panier" style="margin:auto; padding:10px;">
+                            <ul>
+                            {% set prixTotalPanier = 0 %}
+                            {% for panierArticle in panier.panierArticles %}
+                                {% set prixTotalPanier = prixTotalPanier + panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite %} 
+                                <li>
+                                    {{panierArticle.article.NomArticle | raw}} en {{panierArticle.Quantite | raw}} exemplaire(s) : {{panierArticle.article.PrixUnitaireTTC * panierArticle.Quantite}}€
+                                </li>
+                            {% endfor %} 
+                            </ul>
+                            
+                        </div>
+                        <div class="card-body" style="margin:auto; padding-top:10px">
+                            <p><strong>Montant total de votre panier : {{prixTotalPanier}}€</strong></p>
+                            {% if panier.panierArticles|length != 0 %}
+                            
+                                <button type="submit" class="btn btn-success">Passer la commande</button>
+                                                    
+                            {% else %}
+                            <p><font color="black"><strong>Votre panier est vide, il faut au moins 1 article</strong></font></p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form> 
             {% endif %}
         </div>
     </section>
-    <script>
-        function affichage(){
-            //Si c'est remise en main propre on affichage du texte au lieu de l'adresse
-            if (document.getElementById("selectModeExpedition").value = 1) {
 
-            }
-        }    
-    </script>
 {% endblock %}

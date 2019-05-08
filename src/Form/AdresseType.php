@@ -25,10 +25,6 @@ class AdresseType extends AbstractType
                 'class' => Pays::class,
                 'choice_label' => 'LibellePays'
             ])
-            ->add('TypeAdresse', EntityType::class,[
-                'class' => TypeAdresse::class,
-                'choice_label' => 'LibelleTypeAdresse'
-            ])
         ;
     }
 

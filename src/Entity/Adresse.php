@@ -55,12 +55,6 @@ class Adresse
     private $PaysAdresse;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TypeAdresse", inversedBy="adresses")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $TypeAdresse;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Commande", mappedBy="AdresseLivraison")
      */
     private $commandes;
@@ -160,18 +154,6 @@ class Adresse
     public function SetPaysAdresse(?Pays $PaysAdresse): self
     {
         $this->PaysAdresse = $PaysAdresse;
-
-        return $this;
-    }
-
-    public function getTypeAdresse(): ?TypeAdresse
-    {
-        return $this->TypeAdresse;
-    }
-
-    public function setTypeAdresse(?TypeAdresse $TypeAdresse): self
-    {
-        $this->TypeAdresse = $TypeAdresse;
 
         return $this;
     }
