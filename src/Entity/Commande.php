@@ -59,13 +59,13 @@ class Commande
     private $EstRegle;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Article", inversedBy="commandes")
+     * @ORM\OneToMany(targetEntity="App\Entity\CommandeArticle", mappedBy="Commande")
      */
-    private $Article;
+    private $commandeArticles;
 
     public function __construct()
     {
-        $this->Article = new ArrayCollection();
+        $this->commandeArticles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,26 +170,31 @@ class Commande
     }
 
     /**
-     * @return Collection|Article[]
+     * @return Collection|CommandeArticle[]
      */
-    public function getArticle(): Collection
+    public function getCommandeArticles(): Collection
     {
-        return $this->Article;
+        return $this->commandeArticles;
     }
 
-    public function addArticle(Article $article): self
+    public function addCommandeArticle(CommandeArticle $commandeArticle): self
     {
-        if (!$this->Article->contains($article)) {
-            $this->Article[] = $article;
+        if (!$this->commandeArticles->contains($commandeArticle)) {
+            $this->commandeArticles[] = $commandeArticle;
+            $commandeArticle->setCommande($this);
         }
 
         return $this;
     }
 
-    public function removeArticle(Article $article): self
+    public function removeCommandeArticle(CommandeArticle $commandeArticle): self
     {
-        if ($this->Article->contains($article)) {
-            $this->Article->removeElement($article);
+        if ($this->commandeArticles->contains($commandeArticle)) {
+            $this->commandeArticles->removeElement($commandeArticle);
+            // set the owning side to null (unless already changed)
+            if ($commandeArticle->getCommande() === $this) {
+                $commandeArticle->setCommande(null);
+            }
         }
 
         return $this;

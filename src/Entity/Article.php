@@ -69,16 +69,17 @@ class Article
     private $PrixProduction;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Commande", mappedBy="Article")
+     * @ORM\OneToMany(targetEntity="App\Entity\CommandeArticle", mappedBy="Article")
      */
-    private $commandes;
+    private $commandeArticles;
+
 
     public function __construct()
     {
         $this->CategorieArticle = new ArrayCollection();
         $this->Photo = new ArrayCollection();
         $this->panierArticles = new ArrayCollection();
-        $this->commandes = new ArrayCollection();
+        $this->commandeArticles = new ArrayCollection();
     }
 
 
@@ -260,28 +261,31 @@ class Article
     }
 
     /**
-     * @return Collection|Commande[]
+     * @return Collection|CommandeArticle[]
      */
-    public function getCommandes(): Collection
+    public function getCommandeArticles(): Collection
     {
-        return $this->commandes;
+        return $this->commandeArticles;
     }
 
-    public function addCommande(Commande $commande): self
+    public function addCommandeArticle(CommandeArticle $commandeArticle): self
     {
-        if (!$this->commandes->contains($commande)) {
-            $this->commandes[] = $commande;
-            $commande->addArticle($this);
+        if (!$this->commandeArticles->contains($commandeArticle)) {
+            $this->commandeArticles[] = $commandeArticle;
+            $commandeArticle->setArticle($this);
         }
 
         return $this;
     }
 
-    public function removeCommande(Commande $commande): self
+    public function removeCommandeArticle(CommandeArticle $commandeArticle): self
     {
-        if ($this->commandes->contains($commande)) {
-            $this->commandes->removeElement($commande);
-            $commande->removeArticle($this);
+        if ($this->commandeArticles->contains($commandeArticle)) {
+            $this->commandeArticles->removeElement($commandeArticle);
+            // set the owning side to null (unless already changed)
+            if ($commandeArticle->getArticle() === $this) {
+                $commandeArticle->setArticle(null);
+            }
         }
 
         return $this;

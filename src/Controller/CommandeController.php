@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Panier;
 use App\Entity\Adresse;
 use App\Entity\ModeExpedition;
@@ -13,6 +14,8 @@ use App\Entity\Commande;
 use App\Entity\Client;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\PanierArticle;
+use App\Entity\CommandeArticle;
+use App\Entity\StatutCommande;
 
 class CommandeController extends AbstractController
 {
@@ -29,7 +32,7 @@ class CommandeController extends AbstractController
     /**
      * @Route("/creationCommande", name="CreationCommande")
      */
-    public function creationCommande(UserInterface $user, Request $request){
+    public function creationCommande(UserInterface $user, Request $request, ObjectManager $manager){
         $ModeExpedition = $request->get('selectModeExpedition');
         $ModePaiement = $request->get('selectModePaiement');
 
@@ -37,6 +40,9 @@ class CommandeController extends AbstractController
 
         $repoClient = $this->getDoctrine()->getRepository(Client::class);
         $client = $repoClient->find($user->getId());
+
+        $repoAdresse = $this->getDoctrine()->getRepository(Adresse::class);
+        $adresse = $repoAdresse->findOneBy(['Client' => $user->getId()]);
 
         $repoModeExpedition = $this->getDoctrine()->getRepository(ModeExpedition::class);
         $modeExpedition = $repoModeExpedition->find($ModeExpedition);
@@ -48,19 +54,33 @@ class CommandeController extends AbstractController
         $panier = $repoPanier->findOneBy(['Client' => $user->getId()]);
 
         $repoPanierArticle = $this->getDoctrine()->getRepository(PanierArticle::class);
-        $panierArticle = $repoPanierArticle->findOneBy(["Panier" => $panier]);
+        $panierArticle = $repoPanierArticle->findBy(["Panier" => $panier]);
 
-        foreach ($panierArticle as $panier) {
-            $commande.addArticle($panier.Article);
-        }
+        $repoStatutCommande = $this->getDoctrine()->getRepository(StatutCommande::class);
+        $statutCommande = $repoStatutCommande->findOneBy(["CodeStatut" => "CR"]);
 
         $commande->setClient($client);
         $commande->setCreatedAt(new \DateTime());
         $commande->setEstRegle(false);
         $commande->setModeExpedition($modeExpedition);
         $commande->setModePaiement($modePaiement);
+        $commande->setAdresseFacturation($adresse);
+        $commande->setAdresseLivraison($adresse);
+        $commande->setStatutCommande($statutCommande);
 
-        dump($commande);
+        $manager->persist($commande);
+        $manager->flush();
+
+        foreach ($panierArticle as $article) {
+            $commandeArticle = new CommandeArticle();
+            $commandeArticle->setCommande($commande);
+            $commandeArticle->setArticle($article->getArticle());
+            $commandeArticle->setQuantite($article->getQuantite());
+
+            $manager->persist($commandeArticle);
+            $manager->flush();
+        }
+
         return $this->render('commande/commandeCreee.html.twig', [
             'commande' => $commande
         ]); 
