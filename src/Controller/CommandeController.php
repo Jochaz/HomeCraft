@@ -81,8 +81,18 @@ class CommandeController extends AbstractController
             $manager->flush();
         }
 
-        return $this->render('commande/commandeCreee.html.twig', [
-            'commande' => $commande
+        foreach ($panierArticle as $article) {
+            $manager->remove($article);
+            $manager->flush();
+        }
+
+        $manager->remove($panier);
+        $manager->flush();
+
+
+        return $this->render('commande/index.html.twig', [
+            'commande' => $commande,
+            'commandePassee' => True
         ]); 
     }
 
