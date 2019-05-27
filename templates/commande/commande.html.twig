@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos commande{% endblock %}
+
+{% block body %}
+    <section>
+         <h2 class="display-5" style="padding: 30px">Votre commande n°{{commande.id | raw}} <i class="fa fa-shopping-basket"></i></h2>
+         <div id="contenu_panier">
+            {% if commande is null or commande.commandeArticles|length == 0  %}
+            <div id="panier_vide">
+                <p style="text-align:center">Votre panier est vide !</p>
+            </div>
+            {% else %}
+            <div id="header_commande" style="padding-left:15px">
+                <p>Votre commande a été passé le {{commande.createdAt|date('d-m-Y')}}. <br />
+                    Le mode d'expédition choisi est : {{commande.ModeExpedition.Libelle}}. <br />
+                    Le mode de paiement choisi est : {{commande.ModePaiement.Libelle}}. <br />
+                    {% if commande.EstRegle == true %}
+                        La commande a bien été réglée. <br />
+                    {% else %}
+                        La commande n'a pas encore été réglée. <br />
+                    {% endif %} 
+                    Statut de la commande : {{commande.StatutCommande.LibelleStatut}}
+                </p>
+            </div>
+            <div id="tableau_commande">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Article</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix</th>
+                            <th scope="col">Prix total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commandeArticle in commande.commandeArticles %}
+                            <tr>
+                                <td><a href="/article/{{commandeArticle.article.id}}">{{commandeArticle.article.NomArticle | raw}}</a></td>
+                                <td>{{commandeArticle.Quantite | raw}}</td>
+                                <td>{{commandeArticle.article.PrixUnitaireTTC}}€</td>
+                                <td>{{commandeArticle.article.PrixUnitaireTTC * commandeArticle.Quantite}}€</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

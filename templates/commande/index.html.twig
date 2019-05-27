@@ -1,7 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Votre commande{% endblock %}
+{% block title %}Vos commande{% endblock %}
 
 {% block body %}
-
+<div id="entete_panier">
+        <h2 class="display-5" style="padding: 30px">Vos commandes <i class="fa fa-shopping-basket"></i></div>
+    </div>
+    <section class="jumbotron">
+        <div id="contenu_panier">
+            {% if commandes is null or commandes|length == 0  %}
+            <div id="panier_vide">
+                <p style="text-align:center">Vous n'avez pas encore de commande !</p>
+            </div>
+            {% else %}
+            <div id="tableau_panier">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">N° de commande</th>
+                            <th scope="col">Prix</th>
+                            <th scope="col">Date de la commande</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col">Est reglé</th>
+                            <th scope="col">Mode d'expédition</th>
+                            <th scope="col">Mode de règlement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commande in commandes %}
+                            {% set PrixTotal = 0 %}
+                            {% for articleCommande in commande.commandeArticles %}
+                                {% set PrixTotal = PrixTotal + articleCommande.Quantite * articleCommande.article.PrixUnitaireTTC %}   
+                            {% endfor %}
+                            <tr>
+                                <td><a href="/commande/{{commande.id}}">{{commande.id | raw}}</td>            
+                                <td>{{PrixTotal}}€</td>
+                                <td>{{commande.createdAt|date('d-m-Y')}}</td>
+                                <td>{{commande.StatutCommande.LibelleStatut}}</td>
+                                {% if commande.EstRegle == true %}
+                                    <td>Oui</td>
+                                {% else %}
+                                    <td>Non</td>
+                                {% endif %}      
+                                <td>{{commande.ModeExpedition.Libelle}}</td>
+                                <td>{{commande.ModePaiement.Libelle}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
+            {% endif %}
+        </div>
+    </section>
 {% endblock %}

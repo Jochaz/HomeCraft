@@ -20,14 +20,32 @@ use App\Entity\StatutCommande;
 class CommandeController extends AbstractController
 {
     /**
+     * @Route("/commandes", name="commandes")
+     */
+    public function index(UserInterface $user)//Commande $commande)
+    {
+        $repoClient = $this->getDoctrine()->getRepository(Client::class);
+        $client = $repoClient->find($user->getId());
+
+        $repoCommandes = $this->getDoctrine()->getRepository(Commande::class);
+        $commandes = $repoCommandes->findBy(["Client" => $client]);
+
+        dump($commandes);
+        return $this->render('commande/index.html.twig', [
+            'commandes' => $commandes
+        ]);
+    }
+
+    /**
      * @Route("/commande/{id}", name="commande")
      */
-    public function index()//Commande $commande)
+    public function commande(Commande $commande)//Commande $commande)
     {
-        return $this->render('commande/index.html.twig', [
+        return $this->render('commande/commande.html.twig', [
             'commande' => $commande
         ]);
     }
+
 
     /**
      * @Route("/creationCommande", name="CreationCommande")
