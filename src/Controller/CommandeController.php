@@ -109,7 +109,7 @@ class CommandeController extends AbstractController
 
 
         return $this->render('commande/index.html.twig', [
-            'commande' => $commande,
+            'commandes' => $commande,
             'commandePassee' => True
         ]); 
     }
