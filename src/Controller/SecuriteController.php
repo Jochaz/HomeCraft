@@ -18,7 +18,7 @@ class SecuriteController extends AbstractController
     /**
      * @Route("/inscription", name="securite_inscription")
      */
-    public function inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, LoggerInterface $logger)
+    public function inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, LoggerInterface $logger, \Swift_Mailer $mailer)
     {
         $logger->info('I just got the logger');
         $client = new Client();
@@ -36,11 +36,27 @@ class SecuriteController extends AbstractController
             $manager->persist($client);
             $manager->persist($adresseLivraison);
             $manager->flush();
+            $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('homecraftsuivi@gmail.com')
+            ->setTo('jordan.chariot@gmail.com')
+            ->setBody(
+                $this->renderView(
+                    // templates/emails/registration.html.twig
+                    'emails/client/registration.html.twig',
+                    ['Nom' => $client->getNomClient()]
+                ),
+                'text/html'
+            ); 
+            $mailer->send($message);
+            dump($mailer);
+            dump($message);
 
+            //return $this->render('site/home.html.twig');
             return $this->redirectToRoute('home');
         } else{
                 $logger->error('An error occurred');
         }
+
         
         return $this->render('securite/inscriptionClient.html.twig', [
             'form' => $form->createView(),
