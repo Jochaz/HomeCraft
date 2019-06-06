@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HomeCraft : Panneau administration liste des clients{% endblock %}
+
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Administration</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor03">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/administration/clients">Liste des clients <span class="sr-only">(current)</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/listecommande">Liste des commandes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/articles">Liste des articles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/blogs">Liste des articles du blog</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<section>
+<div class="jumbotron">
+    <h2 class="display-5" style="padding: 30px">{{client.NomClient}} {{client.PrenomClient}}</h2>
+        {{form_start(form)}}
+            <legend>Informations générales</legend>
+        {{form_row(form.Civilite)}}
+        {{form_row(form.NomClient, {'label': 'Votre nom', 'attr' : {'placeholder': 'Nom'}})}}
+        {{form_row(form.PrenomClient, {'label': 'Votre prénom','attr' : {
+                                                'placeholder': 'Prénom'}})}}
+        {{form_row(form.DateNaissance)}} 
+        {{form_row(form.EmailClient, {'label': 'Adresse email','attr' : {
+                                                'placeholder': 'Adresse email'}})}} 
+        {{form_end(form)}}      
+     
+    
+       <h3 class="display-5" style="padding: 30px">COMMANDES</h3>
+        {% if client.commandes|length != 0 %}
+            <p class="lead">Aucune commande pour ce client</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

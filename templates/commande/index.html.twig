@@ -33,7 +33,7 @@
                                 {% set PrixTotal = PrixTotal + articleCommande.Quantite * articleCommande.article.PrixUnitaireTTC %}   
                             {% endfor %}
                             <tr>
-                                <td><a href="/commande/{{commande.id}}">{{commande.id | raw}}</td>            
+                                <td><a href="/commande/{{commande.id}}">{{commande.id | raw}}</a></td>            
                                 <td>{{PrixTotal}}€</td>
                                 <td>{{commande.createdAt|date('d-m-Y')}}</td>
                                 <td>{{commande.StatutCommande.LibelleStatut}}</td>

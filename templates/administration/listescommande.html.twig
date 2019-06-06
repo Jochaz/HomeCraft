@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HomeCraft : Panneau administration liste des commandes{% endblock %}
+
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Administration</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor03">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/clients">Liste des clients</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/administration/listecommande">Liste des commandes<span class="sr-only">(current)</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/articles">Liste des articles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/blogs">Liste des articles du blog</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<section>
+    <h2 class="display-5" style="padding: 30px">Liste des commandes</h2>
+    {% if commandes|length > 0 %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">N° de commande</th>
+                    <th scope="col">Client</th>
+                    <th scope="col">@ Client</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Date de la commande</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Est reglé</th>
+                    <th scope="col">Mode d'expédition</th>
+                    <th scope="col">Mode de règlement</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commande in commandes %}
+                    {% set PrixTotal = 0 %}
+                    {% for articleCommande in commande.commandeArticles %}
+                        {% set PrixTotal = PrixTotal + articleCommande.Quantite * articleCommande.article.PrixUnitaireTTC %}   
+                    {% endfor %}
+                    <tr>
+                        <td><a href="/administration/commande/{{commande.id}}">{{commande.id | raw}}</a></td>    
+                        <td><a href="/administration/client/{{commande.client.id}}">{{commande.client.Civilite.AbreviationCivilite}} {{commande.client.NomClient}} {{commande.client.PrenomClient}}</a></td>        
+                        <td><a href="mailto:?to={{commande.client.EmailClient}}">{{commande.client.EmailClient}}</a></td>
+                        <td>{{PrixTotal}}€</td>
+                        <td>{{commande.createdAt|date('d m Y')}}</td>
+                        <td>{{commande.StatutCommande.LibelleStatut}}</td>
+                        {% if commande.EstRegle == true %}
+                            <td>Oui</td>
+                        {% else %}
+                            <td>Non</td>
+                        {% endif %}      
+                        <td>{{commande.ModeExpedition.Libelle}}</td>
+                        <td>{{commande.ModePaiement.Libelle}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+    {% endif %}
+</section>
+
+{% endblock %}

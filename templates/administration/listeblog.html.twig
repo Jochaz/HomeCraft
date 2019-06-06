@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HomeCraft : Panneau administration liste des articles du blog{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/styleListe.css">{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Administration</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor03">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/clients">Liste des clients</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/listecommande">Liste des commandes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/articles">Liste des articles</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/administration/blogs">Liste des articles du blog<span class="sr-only">(current)</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<section>
+    <h2 class="display-5" style="padding: 30px">Liste des articles du blog</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col col-xs-12">
+                <div class="blog-grids">
+                    {% for article in blogs %}
+                    <div class="grid">
+                        <div class="entry-media">
+                            <img src="http://placehold.it/350x150" alt="">
+                        </div>
+                        <div class="entry-body">
+                            <span class="cat"></span>
+                            <h3><a href="{{ path('article_blog', {'id': article.id}) }}">{{article.Titre}}</a></h3>
+                            {{article.Contenu | raw}}
+                            <div class="read-more-date">
+                                <a href="{{ path('article_blog', {'id': article.id}) }}" class="btn btn-primary">Lire plus...</a>
+                            </div>
+                            <span class="date">Ecrit le {{ article.createdAt | date('d/m/Y')}} à {{article.createdAt | date('H:i')}}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>  
+    </div>
+</section>
+
+{% endblock %}

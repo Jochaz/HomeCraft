@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HomeCraft : Panneau administration liste des clients{% endblock %}
+
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Administration</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor03">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/administration/clients">Liste des clients <span class="sr-only">(current)</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/listecommande">Liste des commandes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/articles">Liste des articles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/administration/blogs">Liste des articles du blog</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<section>
+    <h2 class="display-5" style="padding: 30px">Liste des clients</h2>
+    {% if clients|length > 0 %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Civilité</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Nb commande</th>
+                    <th scope="col">Date de naissance</th>
+                    <th scope="col">Date création</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                    <tr>
+                        <td>{{client.Civilite.AbreviationCivilite}}</td>
+                        <td>{{client.NomClient | raw}}</td>
+                        <td>{{client.PrenomClient | raw}}</td>
+                        <td>{{client.EmailClient | raw}}</td>
+                        <td><a href="/administration/listecommande/client/{{client.id}}">{{client.commandes|length}}</a></td>
+                        <td>{{client.DateNaissance|date("d/m/Y")}}</td>
+                        <td>{{client.createdAt|date("d/m/Y")}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+    {% endif %}
+</section>
+
+{% endblock %}
