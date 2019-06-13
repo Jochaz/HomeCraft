@@ -45,7 +45,7 @@
             </thead>
             <tbody>
                 {% for client in clients %}
-                    <tr>
+                    <tr onclick="document.location='/administration/client/{{client.id}}';">
                         <td>{{client.Civilite.AbreviationCivilite}}</td>
                         <td>{{client.NomClient | raw}}</td>
                         <td>{{client.PrenomClient | raw}}</td>

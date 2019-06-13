@@ -8,6 +8,7 @@ use App\Entity\Commande;
 use App\Form\ClientType;
 use App\Entity\ArticleBlog;
 use App\Form\InscriptionType;
+use App\Entity\StatutCommande;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -32,7 +33,7 @@ class AdministrationController extends AbstractController
         $clients = $repoClient->findAll();    
 
 
-        return $this->render('administration/listeclient.html.twig', [
+        return $this->render('administration/client/listeclient.html.twig', [
             'clients' => $clients
         ]);
     }
@@ -44,22 +45,49 @@ class AdministrationController extends AbstractController
     {
         $form = $this->createForm(ClientType::class, $client);
         
-        return $this->render('administration/client.html.twig', [
+        return $this->render('administration/client/client.html.twig', [
             'form' => $form->createView(),
+            'client' => $client
+        ]);
+    }
+
+    /**
+     * @Route("administration/listecommande/client/{id}", name="listecommandeclient")
+     */
+    public function commandeClient(Client $client)
+    {
+        $repoCommande = $this->getDoctrine()->getRepository(Commande::class);
+        $commandes = $repoCommande->findBy(["Client" => $client]);    
+        return $this->render('/administration/commande/listecommandeclient.html.twig', [
+            'commandes' => $commandes,
             'client' => $client
         ]);
     }
         
     /**
-     * @Route("administration/listecommande", name="listecommande")
+     * @Route("/administration/listecommande", name="listecommande")
      */
     public function commandes()
     {
         $repoCommande = $this->getDoctrine()->getRepository(Commande::class);
         $commandes = $repoCommande->findAll();    
 
-        return $this->render('administration/listescommande.html.twig', [
+        return $this->render('administration/commande/listescommande.html.twig', [
             'commandes' => $commandes,
+        ]);
+    }
+
+    /**
+     * @Route("/administration/commande/{id}", name="admincommande")
+     */
+    public function commande(Commande $commande)
+    {
+        $repoStatut = $this->getDoctrine()->getRepository(StatutCommande::class);
+        $statuts = $repoStatut->findAll();   
+
+        return $this->render('administration/commande/commande.html.twig', [
+            'commande' => $commande,
+            'statuts' => $statuts
         ]);
     }
 
