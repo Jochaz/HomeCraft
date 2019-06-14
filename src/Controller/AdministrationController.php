@@ -9,6 +9,8 @@ use App\Form\ClientType;
 use App\Entity\ArticleBlog;
 use App\Form\InscriptionType;
 use App\Entity\StatutCommande;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -83,7 +85,7 @@ class AdministrationController extends AbstractController
     public function commande(Commande $commande)
     {
         $repoStatut = $this->getDoctrine()->getRepository(StatutCommande::class);
-        $statuts = $repoStatut->findAll();   
+        $statuts = $repoStatut->findAll(); 
 
         return $this->render('administration/commande/commande.html.twig', [
             'commande' => $commande,
@@ -92,10 +94,40 @@ class AdministrationController extends AbstractController
     }
 
     /**
+     * @Route("/administration/AdminModificationCommande", name="adminModifCommande")
+     */
+    public function modificationCommande(Request $request, ObjectManager $manager){
+        $repoCommande = $this->getDoctrine()->getRepository(Commande::class);
+        $commande = $repoCommande->findOneById($request->get('commande'));
+
+        $repoStatut = $this->getDoctrine()->getRepository(StatutCommande::class);
+        $statut = $repoStatut->findOneById($request->get('select_statut_commande'));
+        $statuts = $repoStatut->findAll(); 
+        $modif = False;
+
+        if ($commande->getEstRegle() == false && $request->get('select_reglement_commande') == "1"){
+            $commande->setEstRegle(True);
+            $modif = TRUE;    
+        }
+        if ($commande->getStatutCommande() != $statut){
+            $commande->setStatutCommande($statut);
+            $modif = TRUE;  
+        }
+        if ($modif){
+            $manager->persist($commande);
+            $manager->flush();
+        }
+        
+        return $this->redirectToRoute('admincommande', array(
+            'id' => $commande->getId()
+        ));
+    }
+    /**
      * @Route("administration/blogs", name="blogs")
      */
     public function blogs()
     {
+        
         $repoBlog = $this->getDoctrine()->getRepository(ArticleBlog::class);
         $blogs = $repoBlog->findAll();  
         return $this->render('administration/listeblog.html.twig', [
